@@ -1,12 +1,15 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
+const ApiErorr = require("./utils/apiErorr");
 const dbConnection = require("./config/database");
 const categoryRouter = require("./Routes/categoryRoute");
+const { globalError } = require("./middelwares/errorGlobalMiddleware");
+
 dotenv.config({
   path: ".env",
 });
-
+console.log(process.env.NODE_ENV);
 const app = express();
 app.use(express.json());
 
@@ -20,20 +23,27 @@ if (process.env.NODE_ENV === "development") {
 
 // Mount Route
 app.use("/api/v1/category/", categoryRouter);
- 
-// here catch router i don`t mention it up ☝️
-app.all('*',(req, res,next) => {
-// create error and send it to error handling middleware
-const error = new Error(`Can't found this route: ${req.originalUrl}  `)
-next(error.message);
-})
-//Express know this is 'Global Error Handling Middleware' when you make four parameters
-app.use((err, req ,res, next)=>{
-res.status(500).json({Error:err})
-})
 
+// here catch router i don`t mention it up ☝️
+app.all("*", (req, res, next) => {
+  next(new ApiErorr(`Can't found this route: ${req.originalUrl}`, 400));
+});
+
+//Express know this is 'Global Error Handling Middleware' when you make four parameters
+app.use(globalError);
 
 //Bootstrap
-app.listen(8000, () => {
+const server=  app.listen(8000, () => {
   console.log("app listening");
+});
+
+//Handle errors outside express 
+process.on("unhandledRejection", (err) => {
+  console.error("unhandledRejection Errors", err);
+  // close server connection before close application 
+  // because maybe there are requset on server so it will done and close application
+  server.close(()=>{
+    console.log("shutting down...");
+    process.exit(1);
+  })
 });
