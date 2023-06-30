@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const ApiErorr = require("./utils/apiErorr");
 const dbConnection = require("./config/database");
 const categoryRouter = require("./Routes/categoryRoute");
+const subCategoryRouter = require("./Routes/subCategoryRoute");
 const { globalError } = require("./middelwares/errorGlobalMiddleware");
 
 dotenv.config({
@@ -23,6 +24,7 @@ if (process.env.NODE_ENV === "development") {
 
 // Mount Route
 app.use("/api/v1/category/", categoryRouter);
+app.use("/api/v1/subcategory/",subCategoryRouter );
 
 // here catch router i don`t mention it up ☝️
 app.all("*", (req, res, next) => {

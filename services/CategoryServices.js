@@ -1,6 +1,7 @@
 const slugify = require("slugify");
 const CategoryModel = require("../models/categoryModel");
 const asyncHandler = require("express-async-handler");
+
 const ApiErorr = require("../utils/apiErorr");
 
 // 'Fetch categories' Get /api/v1/category access Pubilc (all users)
