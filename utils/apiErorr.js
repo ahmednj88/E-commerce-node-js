@@ -1,4 +1,4 @@
-//this is class responsible about operations erorrs
+//this is class responsible about operations errors
 class ApiErorr extends Error {
   constructor(message, statusCode) {
     super(message);
@@ -7,4 +7,5 @@ class ApiErorr extends Error {
     this.isOperationError = true;
   }
 }
+
 module.exports = ApiErorr;

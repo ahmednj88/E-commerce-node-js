@@ -1,8 +1,7 @@
-const slugify = require("slugify");
-const CategoryModel = require("../models/categoryModel");
 const asyncHandler = require("express-async-handler");
-
+const slugify = require("slugify");
 const ApiErorr = require("../utils/apiErorr");
+const CategoryModel = require("../models/categoryModel");
 
 // 'Fetch categories' Get /api/v1/category access Pubilc (all users)
 exports.getCategorios = asyncHandler(async (req, res) => {
@@ -25,7 +24,7 @@ exports.getCategoryById = asyncHandler(async (req, res, next) => {
 
 // 'Create category' Post /api/v1/category access Private (admin)
 exports.createCategory = asyncHandler(async (req, res) => {
-  const name = req.body.name;
+  const {name} = req.body;
   const category = await CategoryModel.create({ name, slug: slugify(name) });
   res.status(201).json({ data: category });
 });

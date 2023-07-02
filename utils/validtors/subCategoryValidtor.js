@@ -1,6 +1,13 @@
 const { check } = require("express-validator");
 const validatorMiddleware = require("../../middelwares/validtorMiddlware");
 
+
+// Validator functions of get category by id
+exports.subCategoryByIdValidtor = () => [
+  check("id").isMongoId().withMessage("Invalid category id "),
+  validatorMiddleware,
+];
+
 exports.createSubCategoryValidtor = () => [
   check("name")
     .notEmpty()
@@ -9,7 +16,11 @@ exports.createSubCategoryValidtor = () => [
     .withMessage("subCategory name too short")
     .isLength({ max: 32 })
     .withMessage("subCategory name too long"),
-  check("category").isMongoId().withMessage("invalid category mongo id"),
+  check("category")
+    .notEmpty()
+    .withMessage("category id must not empty")
+    .isMongoId()
+    .withMessage("invalid category mongo id"),
   validatorMiddleware,
 ];
 
