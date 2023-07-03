@@ -16,7 +16,6 @@ const {
  } = require("../utils/validtors/categoryValidtor");
  
 const router = express.Router();
-
 router
   .route("/")
   .get(getCategorios)
