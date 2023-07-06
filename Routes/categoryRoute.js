@@ -1,5 +1,4 @@
 const express = require("express");
-
 const {
   getCategorios,
   createCategory,
@@ -12,16 +11,19 @@ const {
   categoryByIdValidtor,
   createCategoryValidtor,
   updateCategoryValidtor,
-  deleteCategoryValidtor
- } = require("../utils/validtors/categoryValidtor");
- 
+  deleteCategoryValidtor,
+} = require("../utils/validtors/categoryValidtor");
+const subCategoriesRoute = require("./subCategoryRoute");
+
 const router = express.Router();
+router.use("/:categoryId/subcategories", subCategoriesRoute);
+
 router
   .route("/")
   .get(getCategorios)
   .post(createCategoryValidtor(), createCategory);
 // express-validtor  (validtorMiddleware[], service)
-//validtorMiddleware = rules + middleware (if there are problem with rule if not run next())
+// validtorMiddleware = rules + middleware (if there are problem with rule if not run next())
 router
   .route("/:id")
   .get(

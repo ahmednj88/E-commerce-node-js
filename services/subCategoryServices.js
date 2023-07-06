@@ -3,6 +3,13 @@ const asyncHandler = require("express-async-handler");
 const subCategoryModel = require("../models/subCategoryModel");
 const ApiErorr = require("../utils/apiErorr");
 
+// this run to dont make validate response that no category in body with create createSubCategoryValidtor
+exports.setCategoryIdToBody = (req, res, next) => {
+  if (!req.body.category) {
+    req.body.category = req.params.categoryId;
+  }
+  next();
+};
 // 'Create category' Post /api/v1/subcategory access Private (admin)
 exports.createSubCategory = asyncHandler(async (req, res) => {
   const { name, category } = req.body;
@@ -19,14 +26,33 @@ exports.getSubCategorios = asyncHandler(async (req, res) => {
   const page = req.query.page * 1 || 1;
   const limit = req.query.limit * 1 || process.env.limit || 10;
   const skip = (page - 1) * limit;
-  const subcategories = await subCategoryModel.find({}).skip(skip).limit(limit);
+  let filterObjectFoundWhat = {};
+
+  if (req.params.categoryId) {
+    filterObjectFoundWhat = { category: req.params.categoryId };
+  }
+  const subcategories = await subCategoryModel
+    .find(filterObjectFoundWhat)
+    .skip(skip)
+    .limit(limit)
+    .populate("category");
   res.status(200).json({ result: subcategories.length, data: subcategories });
 });
 
 // 'Fetch subcategories by id ' Get /api/v1/subcategory/:id access Pubilc (all users)
 exports.getSubCategoryById = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
-  const subcategory = await subCategoryModel.findById(id);
+  const subcategory = await subCategoryModel.findById(id).populate("category");
+  if (!subcategory) {
+    return next(new ApiErorr(`No subCategory for this ${id} `, 404));
+  }
+  res.status(200).json({ data: subcategory });
+});
+
+// 'Fetch subcategories by categoryId ' Get /api/v1/subcategory/:categoryId/subcategories access Pubilc (all users)
+exports.getSubCategoryByCategoriesId = asyncHandler(async (req, res, next) => {
+  const { id } = req.params;
+  const subcategory = await subCategoryModel.findById(id).populate("category");
   if (!subcategory) {
     return next(new ApiErorr(`No subCategory for this ${id} `, 404));
   }
@@ -56,5 +82,5 @@ exports.deleteSubCategoryById = asyncHandler(async (req, res, next) => {
   if (!category) {
     return next(new ApiErorr(`No category for this ${id} `, 404));
   }
-  res.status(201).json({ data: "No content" });
+  res.status(204).json({ data: "No content" });
 });

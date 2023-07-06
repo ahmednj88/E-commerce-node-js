@@ -5,6 +5,7 @@ const {
   getSubCategoryById,
   updateSubCategory,
   deleteSubCategoryById,
+  setCategoryIdToBody,
 } = require("../services/subCategoryServices");
 const {
   subCategoryByIdValidtor,
@@ -13,10 +14,12 @@ const {
   deletesubCategoryValidtor,
 } = require("../utils/validtors/subCategoryValidtor");
 
-const router = express.Router();
+// mergeParams : Allow us to access parameters on other routers
+// Example we need to access categorid from category router
+const router = express.Router({ mergeParams: true });
 router
   .route("/")
-  .post(createSubCategoryValidtor(), createSubCategory)
+  .post(setCategoryIdToBody, createSubCategoryValidtor(), createSubCategory)
   .get(getSubCategorios);
 router
   .route("/:id")

@@ -24,7 +24,7 @@ exports.getCategoryById = asyncHandler(async (req, res, next) => {
 
 // 'Create category' Post /api/v1/category access Private (admin)
 exports.createCategory = asyncHandler(async (req, res) => {
-  const {name} = req.body;
+  const { name } = req.body;
   const category = await CategoryModel.create({ name, slug: slugify(name) });
   res.status(201).json({ data: category });
 });
@@ -52,5 +52,5 @@ exports.deleteCategoryById = asyncHandler(async (req, res, next) => {
   if (!category) {
     return next(new ApiErorr(`No category for this ${id} `, 404));
   }
-  res.status(201).json({ data: "No content" });
+  res.status(204).json({ data: "No content" });
 });
