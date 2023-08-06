@@ -7,7 +7,7 @@ const productSchema = new mongoose.Schema(
       require: true,
       trim: true,
       minLength: [3, "Too short product title"],
-      maxLength: [32, "Too long product title"],
+      maxLength: [200, "Too long product title"],
     },
     slug: {
       type: String,
@@ -52,10 +52,10 @@ const productSchema = new mongoose.Schema(
       ref: "Category",
       required: [true, "Product must belong to category"],
     },
-    subcategory: {
+    subcategories: [{
       type: mongoose.Schema.ObjectId,
       ref: "subCategory",
-    },
+    }],
     brand: {
       type: mongoose.Schema.ObjectId,
       ref: "Brand",
