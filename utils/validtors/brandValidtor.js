@@ -18,6 +18,8 @@ exports.createBrandValidtor = () => [
   validatorMiddleware,
 ];
 
+
+
 exports.updateBrandValidtor = () => [
   [
     check("id").isMongoId().withMessage("Invalid Brand id "),
@@ -26,8 +28,7 @@ exports.updateBrandValidtor = () => [
       .withMessage("Brand name required")
       .isLength({ min: 3 })
       .withMessage("Brand name too short")
-      .isLength({ max: 32 })
-      .withMessage("Brand name too long"),
+      .isLength({ max: 32 }),
   ],
   validatorMiddleware,
 ];

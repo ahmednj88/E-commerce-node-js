@@ -30,7 +30,7 @@ if (process.env.NODE_ENV === "development") {
 // Mount Route
 app.use("/api/v1/category/", categoryRouter);
 app.use("/api/v1/subcategory/", subCategoryRouter);
-app.use("/api/v1/brand/", brandRouter);
+app.use("/api/v1/brands/", brandRouter);
 app.use("/api/v1/product/", productRouter);
 
 // here catch router i don`t mention it up ☝️

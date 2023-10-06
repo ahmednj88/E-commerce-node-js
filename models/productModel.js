@@ -52,10 +52,12 @@ const productSchema = new mongoose.Schema(
       ref: "Category",
       required: [true, "Product must belong to category"],
     },
-    subcategories: [{
-      type: mongoose.Schema.ObjectId,
-      ref: "subCategory",
-    }],
+    subcategories: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "subCategory",
+      },
+    ],
     brand: {
       type: mongoose.Schema.ObjectId,
       ref: "Brand",
@@ -72,5 +74,12 @@ const productSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
+//mongoose query middleware
+productSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: "category",
+    select: "name",
+  });
+  next();
+});
 module.exports = mongoose.model("Product", productSchema);

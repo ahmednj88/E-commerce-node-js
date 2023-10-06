@@ -13,15 +13,16 @@ const {
   deleteBrandValidtor,
   updateBrandValidtor,
 } = require("../utils/validtors/brandValidtor");
+const { applySlugify } = require("../utils/validtors/globalValidtor");
 
 const router = express.Router();
 
-router.route("/").get(getBrands).post(createBrandValidtor(), createBrand);
+router.route("/").get(getBrands).post(createBrandValidtor(),applySlugify, createBrand);
 // express-validtor  (validtorMiddleware[], service)
 // validtorMiddleware = rules + middleware (if there are problem with rule if not run next())
 router
   .route("/:id")
   .get(BrandByIdValidtor(), getBrandById)
-  .put(updateBrandValidtor(), updateBrand)
+  .put(updateBrandValidtor(), applySlugify, updateBrand)
   .delete(deleteBrandValidtor(), deleteBrandById);
 module.exports = router;

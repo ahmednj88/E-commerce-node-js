@@ -13,13 +13,14 @@ const {
   deleteProductValidator,
 } = require("../utils/validtors/productValidtor");
 const subCategoriesRoute = require("./subCategoryRoute");
+const { applySlugify } = require("../utils/validtors/globalValidtor");
 
 const router = express.Router();
 router.use("/:categoryId/subcategories", subCategoriesRoute);
 router
   .route("/")
   .get(getProducts)
-  .post(createProductValidator(), createProduct);
+  .post(createProductValidator(), applySlugify, createProduct);
 // express-validtor  (validtorMiddleware[], service)
 // validtorMiddleware = rules + middleware (if there are problem with rule if not run next())
 router
@@ -30,6 +31,6 @@ router
     //service
     getProductById
   )
-  .put(updateProductValidator(), updateProduct)
+  .put(updateProductValidator(), applySlugify, updateProduct)
   .delete(deleteProductValidator(), deleteProductById);
 module.exports = router;
