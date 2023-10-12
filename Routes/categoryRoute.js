@@ -5,6 +5,7 @@ const {
   getCategoryById,
   updateCategory,
   deleteCategoryById,
+  uploadCategoryImage,
 } = require("../services/categoryServices");
 
 const {
@@ -15,6 +16,7 @@ const {
 } = require("../utils/validtors/categoryValidtor");
 const subCategoriesRoute = require("./subCategoryRoute");
 const { applySlugify } = require("../utils/validtors/globalValidtor");
+const { resizeImageCategory } = require("../middelwares/uploadImageMiddleware");
 
 const router = express.Router();
 router.use("/:categoryId/subcategories", subCategoriesRoute);
@@ -22,7 +24,13 @@ router.use("/:categoryId/subcategories", subCategoriesRoute);
 router
   .route("/")
   .get(getCategorios)
-  .post(createCategoryValidtor(),applySlugify, createCategory);
+  .post(
+    uploadCategoryImage,
+    resizeImageCategory,
+    createCategoryValidtor(),
+    applySlugify,
+    createCategory
+  );
 // express-validtor  (validtorMiddleware[], service)
 // validtorMiddleware = rules + middleware (if there are problem with rule if not run next())
 router
@@ -33,6 +41,12 @@ router
     //service
     getCategoryById
   )
-  .put(updateCategoryValidtor(),applySlugify , updateCategory)
+  .put(
+    uploadCategoryImage,
+    resizeImageCategory,
+    updateCategoryValidtor(),
+    applySlugify,
+    updateCategory
+  )
   .delete(deleteCategoryValidtor(), deleteCategoryById);
 module.exports = router;

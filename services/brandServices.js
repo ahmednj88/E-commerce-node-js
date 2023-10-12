@@ -1,14 +1,21 @@
-
 const BrandModel = require("../models/brandModel");
-const { deleteOne, updateOne, createOne, getOne, getAll } = require("./handlersFactory");
+const {
+  deleteOne,
+  updateOne,
+  createOne,
+  getOne,
+  getAll,
+} = require("./handlersFactory");
+const { uploadSingleImage } = require("../middelwares/uploadImageMiddleware");
 
+exports.uploadBrandImage = uploadSingleImage("image");
 // 'Fetch Brands' Get /api/v1/Brands access Pubilc (all users)
-exports.getBrands = getAll(BrandModel)
+exports.getBrands = getAll(BrandModel);
 // 'Fetch Brand by id ' Get /api/v1/Brand/:id access Pubilc (all users)
-exports.getBrandById = getOne(BrandModel)
+exports.getBrandById = getOne(BrandModel);
 
 // 'Create Brand' Post /api/v1/Brand access Private (admin)
-exports.createBrand = createOne(BrandModel)
+exports.createBrand = createOne(BrandModel);
 
 // 'Update Brand' Route: Put /api/v1/Brand access Private (admin)
 exports.updateBrand = updateOne(BrandModel);

@@ -1,7 +1,13 @@
 const asyncHandler = require("express-async-handler");
 const subCategoryModel = require("../models/subCategoryModel");
 const ApiErorr = require("../utils/apiErorr");
-const { deleteOne, updateOne, createOne, getOne, getAll } = require("./handlersFactory");
+const {
+  deleteOne,
+  updateOne,
+  createOne,
+  getOne,
+  getAll,
+} = require("./handlersFactory");
 
 // this run to dont make validate response that no category in body with create createSubCategoryValidtor
 exports.setCategoryIdToBody = (req, res, next) => {
@@ -22,12 +28,10 @@ exports.getSubCategoryByCategoriesId = asyncHandler(async (req, res, next) => {
 });
 
 // 'Fetch subcategories' Get /api/v1/subcategory access Pubilc (all users)
-exports.getSubCategorios = getAll(subCategoryModel)
+exports.getSubCategorios = getAll(subCategoryModel);
 
-// 'Fetch subcategories by id ' Get /api/v1/subcategory/:id access Pubilc (all users)
-exports.getSubCategoryById = getOne(subCategoryModel)
-
-
+// 'Fetch subcategories by id 'Get /api/v1/subcategory/:id access Pubilc (all users)
+exports.getSubCategoryById = getOne(subCategoryModel);
 
 // 'Create category' Post /api/v1/subcategory access Private (admin)
 exports.createSubCategory = createOne(subCategoryModel);
